@@ -1,5 +1,5 @@
 # S3ORAM
-Basic implementation of S3ORAM. This project is built on CodeLite IDE (link: http://codelite.org). It is recommended to install CodeLite to load the full S3ORAM workspace. For any inquiries and assistance on building and running the code, please contact Thang Hoang (hoangmin@oregonstate.edu).
+Basic implementation of S3ORAM. This project is built on CodeLite IDE (link: http://codelite.org). It is recommended to install CodeLite to load the full S3ORAM workspace. 
 
 
 # Required Libraries
@@ -59,7 +59,7 @@ Run the binary executable file ```S3ORAM```, which will ask for either Client or
 1. Copy the binary file ``S3ORAM`` compiled under the same configuration to running machines. 
 2. For first time usage, run the ``S3ORAM/Debug/S3ORAM`` file on the *client* machine to initialize the S3ORAM structure first.
 3. Copy the folder ``S3ORAM/data/i/`` to server *i*, or follow the instruction on the client machine to transmit all data to corresponding server (It is recommend to manually copy the folder to avoid interuption during tranmission).
-4. For each server ``i``, run the compiled file ``S3ORAM`` and select the server role (option 2) and the corresponding ID ``i``.
+4. For each server *i*, run the compiled file ``S3ORAM`` and select the server role (option 2) and the corresponding ID ``i``.
 
 
 # Android Build
@@ -75,7 +75,7 @@ Since android device is resource-limited, it is recommended to generate ORAM dat
 3. save and reload the profile
 ```
 
-3. Goto folder ``android-jni/jni``. Open the file ``Android.mk`` and fix SRC_PATH and NDK_PATH variables, where SRC_PATH is the absolute path to  the  S3ORAM src code (e.g., $home/S3ORAM/S3ORAM/), and NDK_PATH is the absolute path to the Android NDK (e.g., $home/$android-ndk-path).
+3. Goto folder ``android-jni/jni``. Open the file ``Android.mk`` and fix ``SRC_PATH`` and ``NDK_PATH`` variables, where ``SRC_PATH`` is the absolute path to  the  S3ORAM src code (e.g., $home/S3ORAM/S3ORAM/), and ``NDK_PATH`` is the absolute path to the Android NDK (e.g., $home/$android-ndk-path).
 4. Disable ``NTL_LIB`` macro in file ``S3ORAM/config.h``.
 5. Goto folder ``android-jni/jni`` , execute ``ndk-build`` command, which will generate executable file ``s3oram_client`` and library file ``libgnustl_shared.so`` in ``android-jni/libs/armeabi/`` folder.
 6. Create a folder named ``s3oram`` in the android phone (via ``adb shell``). Inside ``s3oram`` folder, create a folder named ``bin``.
@@ -85,3 +85,6 @@ Since android device is resource-limited, it is recommended to generate ORAM dat
 export LD_LIBRARY_PATH=$home/s3oram/bin
 ```
 9. Locate to folder ``s3oram/bin``, run the file ``s3oram_client`` to run the program.
+
+# Further Information
+For any inquiries, bugs, and assistance on building and running the code, please contact Thang Hoang (hoangmin@oregonstate.edu).
