@@ -18,7 +18,7 @@ Height                      -> Height of S3ORAM Tree
 
 BUCKET_SIZE                 -> Bucket size
 
-EVICT_RATE                  -> Eviction frequency. 
+EVICT_RATE                  -> Eviction frequency
 
 P                           -> Prime field 
 
