@@ -1,5 +1,5 @@
 # S3ORAM
-Basic implementation of S3ORAM. This project is built on CodeLite IDE (link: http://codelite.org). It is recommended to install CodeLite to load the full S3ORAM workspace. 
+Basic implementation of S3ORAM. The full paper is available at https://eprint.iacr.org/2017/819.pdf. This project is built on CodeLite IDE (link: http://codelite.org). It is recommended to install CodeLite to load the full S3ORAM workspace. 
 
 
 # Required Libraries
@@ -33,9 +33,11 @@ SERVER_PORT[NUM_SERVERS]    -> Server ports for client-server communication
 SERVER_RECV_PORT            -> Server ports for server-server communication
 ```
 
-The folder ```S3ORAM/data``` is used to store generated S3ORAM data structure.
+### Notes
+Due to the imperfection of PRF, it is recommended to select ```BUCKET_SIZE``` larger than ```EVICT_RATE``` to avoid bucket overflow.
 
-The current version leverages random number generator in NTL to assign a new random path for the accessed block, which makes the expected number of blocks/bucket sometimes larger than BUCKET_SIZE/2. Thus, it is recommended to adjust the ```EVICT_RATE``` to be smaller than ```BUCKET_SIZE``` to avoid bucket overflow (we will fix this problem in the later update).
+The folder ```S3ORAM/data``` is required to store generated S3ORAM data structure.
+
 # Build & Compile
 Goto folder ``S3ORAM/`` and execute
 ``` 
