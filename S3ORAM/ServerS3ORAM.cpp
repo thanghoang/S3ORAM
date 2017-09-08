@@ -25,7 +25,8 @@ char ServerS3ORAM::timestamp[16];
 ServerS3ORAM::ServerS3ORAM(TYPE_INDEX serverNo, int selectedThreads) 
 {
 	
-	this->CLIENT_ADDR = "tcp://*:" + SERVER_PORT[serverNo];
+//	this->CLIENT_ADDR = "tcp://*:" + SERVER_PORT[(serverNo)*NUM_SERVERS+serverNo];
+	this->CLIENT_ADDR = "tcp://*:" + std::to_string(5555+(serverNo)*NUM_SERVERS+serverNo);
     
     this->numThreads = selectedThreads;
     this->thread_compute = new pthread_t[numThreads];
@@ -500,7 +501,8 @@ int ServerS3ORAM::evict(zmq::socket_t& socket)
 		cout<< "	[evict] Creating Threads for Receiving Ports..." << endl;
 		for(TYPE_INDEX k = 0; k < NUM_SERVERS-1; k++)
 		{
-            recvSocket_args[k] = struct_socket("tcp://*:" + SERVER_RECV_PORT[(serverNo)*(NUM_SERVERS-1)+k], NULL, 0, shares_buffer_in[k], BUCKET_SIZE*sizeof(TYPE_DATA)*DATA_CHUNKS, NULL,false);
+//            recvSocket_args[k] = struct_socket("tcp://*:" + SERVER_PORT[(serverNo)*(NUM_SERVERS)+this->others[k]], NULL, 0, shares_buffer_in[k], BUCKET_SIZE*sizeof(TYPE_DATA)*DATA_CHUNKS, NULL,false);
+			recvSocket_args[k] = struct_socket("tcp://*:" + std::to_string(5555+(serverNo)*(NUM_SERVERS)+this->others[k]), NULL, 0, shares_buffer_in[k], BUCKET_SIZE*sizeof(TYPE_DATA)*DATA_CHUNKS, NULL,false);
 			pthread_create(&thread_recv[k], NULL, &ServerS3ORAM::thread_socket_func, (void*)&recvSocket_args[k]);
 		}
 		cout << "	[evict] CREATED!" << endl;
@@ -548,35 +550,21 @@ int ServerS3ORAM::evict(zmq::socket_t& socket)
 		//== THREADS FOR SENDING ============================================================================================
 		struct_socket sendSocket_args[NUM_SERVERS-1];
 		cout<< "	[evict] Creating Threads for Sending Shares..."<< endl;;
-        
-       if(serverNo == 0)
+		for (int i = 0; i < NUM_SERVERS-1; i++)
 		{
-			sendSocket_args[0] = struct_socket(SERVER_ADDR[1] + ":" + SERVER_RECV_PORT[2],  shares_buffer_out[0], BUCKET_SIZE*sizeof(TYPE_DATA)*DATA_CHUNKS, NULL, 0, NULL, true);
-			pthread_create(&thread_send[0], NULL, &ServerS3ORAM::thread_socket_func, (void*)&sendSocket_args[0]);
-			sendSocket_args[1] = struct_socket(SERVER_ADDR[2] + ":" + SERVER_RECV_PORT[4],  shares_buffer_out[1], BUCKET_SIZE*sizeof(TYPE_DATA)*DATA_CHUNKS, NULL, 0, NULL, true);
-			pthread_create(&thread_send[1], NULL, &ServerS3ORAM::thread_socket_func, (void*)&sendSocket_args[1]);
-		}
-		else if (serverNo == 1)
-		{
-			sendSocket_args[0] = struct_socket(SERVER_ADDR[0] + ":" + SERVER_RECV_PORT[0],  shares_buffer_out[0], BUCKET_SIZE*sizeof(TYPE_DATA)*DATA_CHUNKS, NULL, 0 , NULL, true);
-			pthread_create(&thread_send[0], NULL, &ServerS3ORAM::thread_socket_func, (void*)&sendSocket_args[0]);
-			sendSocket_args[1] = struct_socket(SERVER_ADDR[2] + ":" + SERVER_RECV_PORT[5], shares_buffer_out[1], BUCKET_SIZE*sizeof(TYPE_DATA)*DATA_CHUNKS, NULL, 0 , NULL, true);
-			pthread_create(&thread_send[1], NULL, &ServerS3ORAM::thread_socket_func, (void*)&sendSocket_args[1]);
-		}
-		else
-		{
-			sendSocket_args[0] = struct_socket(SERVER_ADDR[0] + ":" + SERVER_RECV_PORT[1], shares_buffer_out[0], BUCKET_SIZE*sizeof(TYPE_DATA)*DATA_CHUNKS, NULL, 0 , NULL, true);
-			pthread_create(&thread_send[0], NULL, &ServerS3ORAM::thread_socket_func, (void*)&sendSocket_args[0]);
-			sendSocket_args[1] = struct_socket(SERVER_ADDR[1] + ":" + SERVER_RECV_PORT[3], shares_buffer_out[1], BUCKET_SIZE*sizeof(TYPE_DATA)*DATA_CHUNKS, NULL, 0 , NULL, true);
-			pthread_create(&thread_send[1], NULL, &ServerS3ORAM::thread_socket_func, (void*)&sendSocket_args[1]);
+			sendSocket_args[i] = struct_socket(SERVER_ADDR[this->others[i]] + ":" + std::to_string(5555+this->others[i]*NUM_SERVERS+this->serverNo),  shares_buffer_out[i], BUCKET_SIZE*sizeof(TYPE_DATA)*DATA_CHUNKS, NULL, 0, NULL, true);
+//			sendSocket_args[i] = struct_socket(SERVER_ADDR[this->others[i]] + ":" + SERVER_PORT[this->others[i]*NUM_SERVERS+this->serverNo],  shares_buffer_out[i], BUCKET_SIZE*sizeof(TYPE_DATA)*DATA_CHUNKS, NULL, 0, NULL, true);
+			pthread_create(&thread_send[i], NULL, &ServerS3ORAM::thread_socket_func, (void*)&sendSocket_args[i]);
 		}
 		cout<< "	[evict] CREATED!" <<endl;
 		//=================================================================================================================
 		cout<< "	[evict] Waiting for Threads..." <<endl;
-		pthread_join(thread_send[0], NULL);
-		pthread_join(thread_recv[0], NULL);
-		pthread_join(thread_send[1], NULL);
-		pthread_join(thread_recv[1], NULL);
+		for (int i = 0; i < NUM_SERVERS-1; i++)
+		{
+			pthread_join(thread_send[i], NULL);
+			pthread_join(thread_recv[i], NULL);
+		}
+		
 		cout<< "	[evict] DONE!" <<endl;
 		server_logs[10] += thread_max;
 		thread_max = 0;

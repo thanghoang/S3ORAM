@@ -43,7 +43,7 @@ int main(int argc, char **argv)
 	{
 		int serverNo;
         int selectedThreads;
-		cout << "Enter the Server No (1,2,3):";
+		cout << "Enter the Server No (1-"<< NUM_SERVERS <<"):";
 		cin >> serverNo;
 		cin.clear();
 		cout << endl;
@@ -179,8 +179,7 @@ int main(int argc, char **argv)
 			cout << "COME ON!!" << endl;
 		}
 
-		////cout<<endl<<client->getStashSize()<<endl;
-		cout << "Done!" << endl;
+		cout << "BYE!" << endl;
 	}
 	else
 	{

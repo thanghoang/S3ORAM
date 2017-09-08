@@ -2,11 +2,11 @@
 <CodeLite_Workspace Name="ORAM" Database="" Version="10.0.0">
   <Project Name="S3ORAM" Path="S3ORAM/S3ORAM.project" Active="Yes"/>
   <BuildMatrix>
-    <WorkspaceConfiguration Name="Debug" Selected="no">
+    <WorkspaceConfiguration Name="Debug" Selected="yes">
       <Environment/>
       <Project Name="S3ORAM" ConfigName="Debug"/>
     </WorkspaceConfiguration>
-    <WorkspaceConfiguration Name="Release" Selected="yes">
+    <WorkspaceConfiguration Name="Release" Selected="no">
       <Environment/>
       <Project Name="S3ORAM" ConfigName="Release"/>
     </WorkspaceConfiguration>

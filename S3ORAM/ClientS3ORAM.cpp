@@ -272,7 +272,9 @@ int ClientS3ORAM::sendORAMTree()
     struct_socket thread_args[NUM_SERVERS];
     for (int i = 0; i < NUM_SERVERS; i++)
     {
-        string ADDR = SERVER_ADDR[i]+ ":" + SERVER_PORT[i];
+//        string ADDR = SERVER_ADDR[i]+ ":" + SERVER_PORT[i*NUM_SERVERS+i]; 
+		string ADDR = SERVER_ADDR[i]+ ":" + std::to_string(5555+i*NUM_SERVERS+i); 
+		cout<< "	[sendORAMTree] Connecting to " << ADDR <<endl;
         socket.connect( ADDR.c_str());
             
         socket.send(buffer_out, sizeof(CMD));
@@ -382,8 +384,10 @@ int ClientS3ORAM::access(TYPE_ID blockID)
         memcpy(&vector_buffer_out[i][0], &pathID, sizeof(pathID));
         memcpy(&vector_buffer_out[i][sizeof(pathID)], &this->sharedVector[i][0], (H+1)*BUCKET_SIZE*sizeof(TYPE_DATA));
         
-        thread_args[i] = struct_socket(SERVER_ADDR[i]+ ":" + SERVER_PORT[i], vector_buffer_out[i], sizeof(pathID)+(H+1)*BUCKET_SIZE*sizeof(TYPE_DATA), blocks_buffer_in[i], sizeof(TYPE_DATA)*DATA_CHUNKS,CMD_REQUEST_BLOCK,NULL);
-        pthread_create(&thread_sockets[i], NULL, &ClientS3ORAM::thread_socket_func, (void*)&thread_args[i]);
+//        thread_args[i] = struct_socket(SERVER_ADDR[i]+ ":" + SERVER_PORT[i*NUM_SERVERS+i], vector_buffer_out[i], sizeof(pathID)+(H+1)*BUCKET_SIZE*sizeof(TYPE_DATA), blocks_buffer_in[i], sizeof(TYPE_DATA)*DATA_CHUNKS,CMD_REQUEST_BLOCK,NULL);
+		thread_args[i] = struct_socket(SERVER_ADDR[i]+ ":" + std::to_string(5555+i*NUM_SERVERS+i), vector_buffer_out[i], sizeof(pathID)+(H+1)*BUCKET_SIZE*sizeof(TYPE_DATA), blocks_buffer_in[i], sizeof(TYPE_DATA)*DATA_CHUNKS,CMD_REQUEST_BLOCK,NULL);
+
+		pthread_create(&thread_sockets[i], NULL, &ClientS3ORAM::thread_socket_func, (void*)&thread_args[i]);
     }
     
     
@@ -452,8 +456,10 @@ int ClientS3ORAM::access(TYPE_ID blockID)
 	// 8. upload the share to numRead-th slot in root bucket
     for(TYPE_INDEX k = 0; k < NUM_SERVERS; k++) 
     {
-        thread_args[k] = struct_socket(SERVER_ADDR[k]+ ":" + SERVER_PORT[k], block_buffer_out[k], sizeof(TYPE_DATA)*DATA_CHUNKS+sizeof(TYPE_INDEX), NULL, 0, CMD_SEND_BLOCK,NULL);
-        pthread_create(&thread_sockets[k], NULL, &ClientS3ORAM::thread_socket_func, (void*)&thread_args[k]);
+//		thread_args[k] = struct_socket(SERVER_ADDR[k]+ ":" + SERVER_PORT[k*NUM_SERVERS+k], block_buffer_out[k], sizeof(TYPE_DATA)*DATA_CHUNKS+sizeof(TYPE_INDEX), NULL, 0, CMD_SEND_BLOCK,NULL);
+		thread_args[k] = struct_socket(SERVER_ADDR[k]+ ":" + std::to_string(5555+k*NUM_SERVERS+k), block_buffer_out[k], sizeof(TYPE_DATA)*DATA_CHUNKS+sizeof(TYPE_INDEX), NULL, 0, CMD_SEND_BLOCK,NULL);
+
+		pthread_create(&thread_sockets[k], NULL, &ClientS3ORAM::thread_socket_func, (void*)&thread_args[k]);
     }
     
 	this->numRead = (this->numRead+1)%EVICT_RATE;
@@ -522,8 +528,8 @@ int ClientS3ORAM::access(TYPE_ID blockID)
             }
             memcpy(&evict_buffer_out[i][(H+1)*evictMatSize*sizeof(TYPE_DATA)], &numEvict, sizeof(TYPE_INDEX));
             
-            
-            thread_args[i] = struct_socket(SERVER_ADDR[i]+ ":" + SERVER_PORT[i], evict_buffer_out[i], (H+1)*evictMatSize*sizeof(TYPE_DATA) + sizeof(TYPE_INDEX), NULL,0, CMD_SEND_EVICT,  NULL);
+			thread_args[i] = struct_socket(SERVER_ADDR[i]+ ":" + std::to_string(5555+i*NUM_SERVERS+i), evict_buffer_out[i], (H+1)*evictMatSize*sizeof(TYPE_DATA) + sizeof(TYPE_INDEX), NULL,0, CMD_SEND_EVICT,  NULL);
+//            thread_args[i] = struct_socket(SERVER_ADDR[i]+ ":" + SERVER_PORT[i*NUM_SERVERS+i], evict_buffer_out[i], (H+1)*evictMatSize*sizeof(TYPE_DATA) + sizeof(TYPE_INDEX), NULL,0, CMD_SEND_EVICT,  NULL);
             pthread_create(&thread_sockets[i], NULL, &ClientS3ORAM::thread_socket_func, (void*)&thread_args[i]);
         }
 			

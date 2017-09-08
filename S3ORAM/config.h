@@ -53,17 +53,22 @@ typedef unsigned long long TYPE_DATA;
 
 
 //=== SECRET SHARING PARAMETER================================================
-#define NUM_SERVERS 3
+#define NUM_SERVERS 7
 #define PRIVACY_LEVEL 1 
-const long long int vandermonde[NUM_SERVERS] = {3, -3+P, 1};
+const long long int vandermonde[NUM_SERVERS] = {7, -21+P, 35, -35+P, 21, -7+P, 1};
+
+/** Vandermonde Values for Different Number of Servers (7, 5, 3)*/
+//{7, -21+P, 35, -35+P, 21, -7+P, 1};//{5, -10+P, 10, -5+P, 1};//{3, -3+P, 1};
 //============================================================================
 
 
 //=== SERVER INFO ============================================================
-const std::string SERVER_ADDR[NUM_SERVERS] = {"tcp://localhost", "tcp://localhost", "tcp://localhost"}; 	// SERVER IP ADDRESSES for CLIENT COMM
-const std::string SERVER_PORT[NUM_SERVERS] = {"5555", "5556", "5557"};										// SERVER PORTS for CLIENT COMM
 
-const std::string SERVER_RECV_PORT[2*NUM_SERVERS] = {"5558", "5559", "5560", "5561", "5562", "5563"};		// SERVER PORTS for INTER-SERVER COMM
+	//SERVER IP ADDRESSES
+const std::string SERVER_ADDR[NUM_SERVERS] = {"tcp://localhost", "tcp://localhost", "tcp://localhost", "tcp://localhost", "tcp://localhost", "tcp://localhost", "tcp://localhost"}; 	
+
+	//SERVER PORTS (1 for CLIENT COMM & (NUM_SERVERS-1) for INTER-SERVER COMM)
+//const std::string SERVER_PORT[NUM_SERVERS*NUM_SERVERS] = {"5555","5556","5557", "5558","5559","5560", "5561","5562","5563"};
 //============================================================================
 
 
