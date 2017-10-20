@@ -137,7 +137,6 @@ int S3ORAM::build(TYPE_POS_MAP* pos_map, TYPE_ID** metaData)
     auto start = time_now;
     auto end = time_now;
     
-    TYPE_DATA* buffer_in = new TYPE_DATA[BUCKET_SIZE*sizeof(TYPE_DATA)*DATA_CHUNKS];
     for (TYPE_INDEX i = 0; i < NUM_NODES; i++)
     {
         path = clientDataDir + to_string(i);
@@ -145,30 +144,21 @@ int S3ORAM::build(TYPE_POS_MAP* pos_map, TYPE_ID** metaData)
             cout<< "[S3ORAM] File Cannot be Opened!!" <<endl;
             exit(0);
         }
-        if(fread(buffer_in ,1 , BUCKET_SIZE*sizeof(TYPE_DATA)*DATA_CHUNKS, file_in) != BUCKET_SIZE*sizeof(TYPE_DATA)*DATA_CHUNKS)
-        {
-            cout<< "[S3ORAM] File Cannot be Read!!" <<endl;
-            exit(0);
-        }
-        fclose(file_in);
-        
         for(int ii = 0 ; ii < DATA_CHUNKS; ii++)
         {
-            memcpy(bucket[ii],&buffer_in[ii*BUCKET_SIZE*sizeof(TYPE_DATA)], BUCKET_SIZE*sizeof(TYPE_DATA));
+        
+            fread(bucket[ii] ,1 , BUCKET_SIZE*sizeof(TYPE_DATA), file_in);
             for(TYPE_INDEX j = 0; j < BUCKET_SIZE; j++)
-            {
-                start = time_now;
-            
-                createShares(bucket[ii][j], shares[ii]);
-                end = time_now;
-                
+            {           
+                createShares(bucket[ii][j], shares[ii]);         
                 for(TYPE_INDEX k = 0; k < NUM_SERVERS; k++)  
                 {
                     memcpy(&bucketShares[k][ii][j], &shares[ii][k], sizeof(TYPE_DATA));
-                    
                 }
             }
         }
+        
+        fclose(file_in);
         
         start = time_now;
         for(TYPE_INDEX k = 0; k < NUM_SERVERS; k++) 
