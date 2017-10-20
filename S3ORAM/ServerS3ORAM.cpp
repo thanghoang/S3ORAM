@@ -386,8 +386,8 @@ int ServerS3ORAM::recvBlock(zmq::socket_t& socket)
     fseek(file_update, slotIdx*sizeof(TYPE_DATA),SEEK_SET);
     for(int u = 0 ; u < DATA_CHUNKS; u++)
     {
-        fwrite(&block_buffer_in[u],1,sizeof(TYPE_DATA),file_update);
-        fseek(file_update,BUCKET_SIZE*sizeof(TYPE_DATA),SEEK_CUR);
+        fwrite(&block_buffer_in[u*sizeof(TYPE_DATA)],1,sizeof(TYPE_DATA),file_update);
+        fseek(file_update,(BUCKET_SIZE-1)*sizeof(TYPE_DATA),SEEK_CUR);
     }
     fclose(file_update);
     
