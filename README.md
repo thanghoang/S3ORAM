@@ -12,21 +12,23 @@ All S3ORAM configurations are located in ```S3ORAM/config.h```.
 
 ## Highlighted Parameters:
 ```
-BLOCK_SIZE                  -> Block size (in bytes)
+#define BLOCK_SIZE 128                                -> Block size (in bytes)
 
-Height                      -> Height of S3ORAM Tree
+#define HEIGHT 4                                      -> Height of S3ORAM Tree
 
-BUCKET_SIZE                 -> Bucket size
+#define BUCKET_SIZE 333                               -> Bucket size
 
-EVICT_RATE                  -> Eviction frequency
+#define EVICT_RATE 280                                -> Eviction frequency
 
-P                           -> Prime field 
+static const unsigned long long P = 1073742353;       -> Prime field (size should be equal to the defined TYPE_DATA)
 
-NUM_SERVERS                 -> Number of servers \ell. The current version only supports \ell = 3
-PRIVACY_LEVEL               -> Privacy level t. The current version only supports t = 1
+#define NUM_SERVERS 7                                 -> Number of servers \ell. The current version only supports \ell = 3
+#define PRIVACY_LEVEL 3                               -> Privacy level t. The current version only supports t = 1
 
-SERVER_ADDR                 -> Server IP addresses
-SERVER_PORT                 -> Define the first port for incremental to generate other ports for client-server / server-server communications
+const long long int vandermonde[NUM_SERVERS]          -> The first row of inverse of vandermonde matrix (should be defined according to SERVER_ID from 1....n)
+
+const std::string SERVER_ADDR[NUM_SERVERS]            -> Server IP addresses
+#define SERVER_PORT 5555                              -> Define the first port for incremental to generate other ports for client-server / server-server communications
 
 ```
 
