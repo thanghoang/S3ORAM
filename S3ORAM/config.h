@@ -69,8 +69,6 @@ const long long int vandermonde[NUM_SERVERS] = {7, -21+P, 35, -35+P, 21, -7+P, 1
 const std::string SERVER_ADDR[NUM_SERVERS] = {"tcp://localhost", "tcp://localhost", "tcp://localhost", "tcp://localhost", "tcp://localhost", "tcp://localhost", "tcp://localhost"}; 	
 #define SERVER_PORT 5555        //define the first port to generate incremental ports for client-server /server-server communications
 
-	//SERVER PORTS (1 for CLIENT COMM & (NUM_SERVERS-1) for INTER-SERVER COMM)
-//const std::string SERVER_PORT[NUM_SERVERS*NUM_SERVERS] = {"5555","5556","5557", "5558","5559","5560", "5561","5562","5563"};
 //============================================================================
 
 
