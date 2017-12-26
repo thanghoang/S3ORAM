@@ -324,14 +324,15 @@ int S3ORAM::createShares(TYPE_DATA input, TYPE_DATA* output)
     #else
         random[i] = Utils::_LongRand()+1 % P;
     #endif
-        
     }
     for(unsigned long int i = 1; i <= NUM_SERVERS; i++)
     {
         output[i-1] = input;
+        TYPE_DATA exp = i;
         for(int j = 1 ; j <= PRIVACY_LEVEL ; j++)
         {
-            output[i-1] = (output[i-1] + Utils::mulmod(random[j-1],i)) % P;
+            output[i-1] = (output[i-1] + Utils::mulmod(random[j-1],exp)) % P;
+            exp = Utils::mulmod(exp,i);
 	    }
     }
 	

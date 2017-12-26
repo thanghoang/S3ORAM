@@ -26,7 +26,7 @@ ServerS3ORAM::ServerS3ORAM(TYPE_INDEX serverNo, int selectedThreads)
 {
 	
 //	this->CLIENT_ADDR = "tcp://*:" + SERVER_PORT[(serverNo)*NUM_SERVERS+serverNo];
-	this->CLIENT_ADDR = "tcp://*:" + std::to_string(5555+(serverNo)*NUM_SERVERS+serverNo);
+	this->CLIENT_ADDR = "tcp://*:" + std::to_string(SERVER_PORT+(serverNo)*NUM_SERVERS+serverNo);
     
     this->numThreads = selectedThreads;
     this->thread_compute = new pthread_t[numThreads];
@@ -502,7 +502,7 @@ int ServerS3ORAM::evict(zmq::socket_t& socket)
 		for(TYPE_INDEX k = 0; k < NUM_SERVERS-1; k++)
 		{
 //            recvSocket_args[k] = struct_socket("tcp://*:" + SERVER_PORT[(serverNo)*(NUM_SERVERS)+this->others[k]], NULL, 0, shares_buffer_in[k], BUCKET_SIZE*sizeof(TYPE_DATA)*DATA_CHUNKS, NULL,false);
-			recvSocket_args[k] = struct_socket("tcp://*:" + std::to_string(5555+(serverNo)*(NUM_SERVERS)+this->others[k]), NULL, 0, shares_buffer_in[k], BUCKET_SIZE*sizeof(TYPE_DATA)*DATA_CHUNKS, NULL,false);
+			recvSocket_args[k] = struct_socket("tcp://*:" + std::to_string(SERVER_PORT+(serverNo)*(NUM_SERVERS)+this->others[k]), NULL, 0, shares_buffer_in[k], BUCKET_SIZE*sizeof(TYPE_DATA)*DATA_CHUNKS, NULL,false);
 			pthread_create(&thread_recv[k], NULL, &ServerS3ORAM::thread_socket_func, (void*)&recvSocket_args[k]);
 		}
 		cout << "	[evict] CREATED!" << endl;
@@ -552,7 +552,7 @@ int ServerS3ORAM::evict(zmq::socket_t& socket)
 		cout<< "	[evict] Creating Threads for Sending Shares..."<< endl;;
 		for (int i = 0; i < NUM_SERVERS-1; i++)
 		{
-			sendSocket_args[i] = struct_socket(SERVER_ADDR[this->others[i]] + ":" + std::to_string(5555+this->others[i]*NUM_SERVERS+this->serverNo),  shares_buffer_out[i], BUCKET_SIZE*sizeof(TYPE_DATA)*DATA_CHUNKS, NULL, 0, NULL, true);
+			sendSocket_args[i] = struct_socket(SERVER_ADDR[this->others[i]] + ":" + std::to_string(SERVER_PORT+this->others[i]*NUM_SERVERS+this->serverNo),  shares_buffer_out[i], BUCKET_SIZE*sizeof(TYPE_DATA)*DATA_CHUNKS, NULL, 0, NULL, true);
 //			sendSocket_args[i] = struct_socket(SERVER_ADDR[this->others[i]] + ":" + SERVER_PORT[this->others[i]*NUM_SERVERS+this->serverNo],  shares_buffer_out[i], BUCKET_SIZE*sizeof(TYPE_DATA)*DATA_CHUNKS, NULL, 0, NULL, true);
 			pthread_create(&thread_send[i], NULL, &ServerS3ORAM::thread_socket_func, (void*)&sendSocket_args[i]);
 		}

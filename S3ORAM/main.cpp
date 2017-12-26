@@ -12,8 +12,7 @@ using namespace std;
 unsigned int nthreads = std::thread::hardware_concurrency();
 
 int main(int argc, char **argv)
-{
-    //create folder if not exist
+{    
     
     string mkdir_cmd = "mkdir -p ";
     string mkdir_localState = mkdir_cmd + clientLocalDir;
