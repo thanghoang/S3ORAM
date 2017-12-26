@@ -23,14 +23,11 @@ EVICT_RATE                  -> Eviction frequency
 P                           -> Prime field 
 
 NUM_SERVERS                 -> Number of servers \ell. The current version only supports \ell = 3
-PRIVACY_LEVEL 1             -> Privacy level t. The current version only supports t = 1
-
+PRIVACY_LEVEL               -> Privacy level t. The current version only supports t = 1
 
 SERVER_ADDR                 -> Server IP addresses
+SERVER_PORT                 -> Define the first port for incremental to generate other ports for client-server / server-server communications
 
-SERVER_PORT[NUM_SERVERS]    -> Server ports for client-server communication
-
-SERVER_RECV_PORT            -> Server ports for server-server communication
 ```
 
 ### Notes
