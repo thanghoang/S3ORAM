@@ -383,7 +383,7 @@ int S3ORAM::simpleRecover(TYPE_DATA** shares, TYPE_DATA* result)
     {
         for(unsigned int k = 0; k < DATA_CHUNKS; k++)
         {
-            result[k] = (result[k] + vandermonde[i]*shares[i][k]) % P; 
+            result[k] = (result[k] + Utils::mulmod(vandermonde[i],shares[i][k])) % P; 
         }
     
 	}
