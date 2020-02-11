@@ -85,4 +85,4 @@ Run the binary executable file ```S3ORAM```, which will ask for either Client or
 (to be updated)
 
 # Further Information
-For any inquiries, bugs, and assistance on building and running the code, please contact me at [hoangm@mail.usf.edu](mailto:hoangm@mail.usf.edu?).
+For any inquiries, bugs, and assistance on building and running the code, please contact me at [hoangm@mail.usf.edu](mailto:hoangm@mail.usf.edu).
