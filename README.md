@@ -1,9 +1,8 @@
-# libS3ORAM
-Implementation of libS3ORAM framework, an extension of S3ORAM scheme in CCS'17 that supports k-ary tree and Circuit-ORAM layout. The full paper is currently under review, which will be available soon. 
+# S3ORAM
+This branch is the implementation of the **(extended) S3ORAM framework** from the S3ORAM scheme in CCS'17 that supports k-ary tree and Circuit-ORAM layout. The full paper is available at https://dl.acm.org/doi/abs/10.1145/3369108 (Feel free to [email me](mailto:hoangm@mail.usf.edu?subject=[Paper Request] S3ORAM ACM TOPS'20) for the free version).
 
-This repository is just open for review purpose. We will merge this with our original S3ORAM repo (http://github.com/thanghoang/S3ORAM) after the review is complete! The code is not fully well-organized, we will update it soon.
 
-This project is built on CodeLite IDE (link: http://codelite.org). It is recommended to install CodeLite to load the full libS3ORAM workspace. 
+This project is built on CodeLite IDE (link: http://codelite.org). It is recommended to install CodeLite to load the full S3ORAM workspace. 
 
 ## Updates
 
@@ -17,17 +16,17 @@ This project is built on CodeLite IDE (link: http://codelite.org). It is recomme
 2. ZeroMQ (download link: http://zeromq.org/intro:get-the-software)
 
 # Configuration
-All libS3ORAM Framework configurations are located in ```libS3ORAM/config.h```. 
+All S3ORAM Framework configurations are located in ```S3ORAM/config.h```. 
 
 
 ## To use Circuit-ORAM eviction paradigm
-Enable the macro ``#define CORAM_LAYOUT`` in ```libS3ORAM/config.h```. 
+Enable the macro ``#define CORAM_LAYOUT`` in ```S3ORAM/config.h```. 
 
 ## To use k-ary tree Layout
-Modify the value in the macro ``#define K_ARY`` in ```libS3ORAM/config.h```. 
+Modify the value in the macro ``#define K_ARY`` in ```S3ORAM/config.h```. 
 
 ## To use the default S3ORAM in CCS'17
-Disable the macro ``#define CORAM_LAYOUT`` and enable the macro ``#define TRIPLET_EVICTION`` in ```libS3ORAM/config.h```. 
+Disable the macro ``#define CORAM_LAYOUT`` and enable the macro ``#define TRIPLET_EVICTION`` in ```S3ORAM/config.h```. 
 
 
 ## Highlighted Parameters:
@@ -57,16 +56,16 @@ It is recommended to select ```EVICT_RATE``` = ```BUCKET_SIZE/2```, and ```BUCKE
 The folder ```libS3ORAM/data``` is required to store generated S3ORAM data structure.
 
 # Build & Compile
-Goto folder ``libS3ORAM/`` and execute
+Goto folder ``S3ORAM/`` and execute
 ``` 
 make
 ```
 
-, which produces the binary executable file named ```libS3ORAM``` in ``libS3ORAM/Debug/``.
+, which produces the binary executable file named ```S3ORAM``` in ``S3ORAM/Debug/``.
 
 # Usage
 
-Run the binary executable file ```libS3ORAM```, which will ask for either Client or Server mode. The S3ORAM implementation can be tested using either **single** machine or **multiple** machines:
+Run the binary executable file ```S3ORAM```, which will ask for either Client or Server mode. The S3ORAM implementation can be tested using either **single** machine or **multiple** machines:
 
 
 ## Local Testing:
@@ -86,4 +85,4 @@ Run the binary executable file ```libS3ORAM```, which will ask for either Client
 (to be updated)
 
 # Further Information
-For any inquiries, bugs, and assistance on building and running the code, please contact Thang Hoang (hoangmin@oregonstate.edu).
+For any inquiries, bugs, and assistance on building and running the code, please contact me at [hoangm@mail.usf.edu](mailto:hoangm@mail.usf.edu?).
