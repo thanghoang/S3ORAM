@@ -1,4 +1,4 @@
-# S3ORAM
+# S3ORAM Extension
 This branch is the implementation of the **(extended) S3ORAM framework** from the S3ORAM scheme in CCS'17 that supports k-ary tree and Circuit-ORAM layout. The full paper is available at https://dl.acm.org/doi/abs/10.1145/3369108 (Feel free to [email me](mailto:hoangm@mail.usf.edu?subject=[Paper Request] S3ORAM ACM TOPS'20) for the free version).
 
 
