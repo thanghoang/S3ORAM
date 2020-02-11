@@ -84,5 +84,29 @@ Run the binary executable file ```S3ORAM```, which will ask for either Client or
 # Android Build
 (to be updated)
 
+
+## Citing
+
+If the code is found useful, we would be appreciated if our paper can be cited with the following bibtex format 
+
+```
+@article{10.1145/3369108, 
+author = {Hoang, Thang and Yavuz, Attila A. and Guajardo, Jorge}, 
+title = {A Multi-Server ORAM Framework with Constant Client Bandwidth Blowup}, 
+year = {2020}, 
+issue_date = {February 2020}, 
+publisher = {Association for Computing Machinery}, 
+address = {New York, NY, USA}, 
+volume = {23}, 
+number = {1}, issn = {2471-2566}, 
+url = {https://doi.org/10.1145/3369108}, doi = {10.1145/3369108}, 
+journal = {ACM Trans. Priv. Secur.}, 
+month = feb, 
+articleno = {Article 1}, 
+numpages = {35}, 
+keywords = {ORAM, privacy-enhancing technologies, secret sharing} }
+```
+
+
 # Further Information
 For any inquiries, bugs, and assistance on building and running the code, please contact me at [hoangm@mail.usf.edu](mailto:hoangm@mail.usf.edu?Subject=[Extended%20S3ORAM]%20Inquiry).
