@@ -1,6 +1,9 @@
 # S3ORAM
 Basic implementation of S3ORAM. The full paper is available at https://eprint.iacr.org/2017/819.pdf. This project is built on CodeLite IDE (link: http://codelite.org). It is recommended to install CodeLite to load the full S3ORAM workspace. 
 
+
+## 2020-02-11: S3ORAM extension ([ACM TOPS'20](https://dl.acm.org/doi/abs/10.1145/3369108)) is now available. Check out the branch named *Extention* ** [here](https://github.com/thanghoang/S3ORAM/tree/Extension))
+
 ## Updates
 * 2017-12-25: S3ORAM now supports more than 3 servers with higher privacy levels.
 
