@@ -2,7 +2,7 @@
 This branch contains the implementation of the **(extended) S3ORAM framework** from the basic S3ORAM scheme in CCS'17 that supports k-ary tree and Circuit-ORAM layout. The full paper is available [here](https://dl.acm.org/doi/abs/10.1145/3369108) (Feel free to [email me](mailto:hoangm@mail.usf.edu?subject=[Paper%20Request]%20S3ORAM%20ACM%20TOPS) for the free version).
 
 
-This project is built on CodeLite IDE (link: http://codelite.org). It is recommended to install CodeLite to load the full S3ORAM workspace. 
+This project is built on [CodeLite IDE](http://codelite.org). It is recommended to install CodeLite to load the full S3ORAM workspace. 
 
 ## Updates
 
@@ -11,9 +11,9 @@ This project is built on CodeLite IDE (link: http://codelite.org). It is recomme
 
 
 # Required Libraries
-1. NTL v9.10.0 (download link: http://www.shoup.net/ntl/download.html)
+1. [NTL v9.10.0](http://www.shoup.net/ntl/download.html)
 
-2. ZeroMQ (download link: http://zeromq.org/intro:get-the-software)
+2. [ZeroMQ](http://zeromq.org/intro:get-the-software)
 
 # Configuration
 All S3ORAM Framework configurations are located in ```S3ORAM/config.h```. 
