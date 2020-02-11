@@ -73,7 +73,7 @@ Run the binary executable file ```S3ORAM```, which will ask for either Client or
 Since android device is resource-limited, it is recommended to generate ORAM data using resourceful client machine (e.g., desktop/laptop), and then copy generated client local data (``S3ORAM/data/client_local/`` folder) to the android device for running the experiment. Here the instruction to generate android executable file:
 
 
-1. Download Android NDK (link: https://developer.android.com/ndk/downloads/index.html)
+1. Download [Android NDK](https://developer.android.com/ndk/downloads/index.html)
 2. Add the location of ``ndk-build`` file (i.e., in ``$android-ndk-path/build/``) to ``PATH`` environment variable via e.g.,
 
 ``` 
