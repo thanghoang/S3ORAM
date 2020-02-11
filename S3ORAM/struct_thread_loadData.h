@@ -22,8 +22,11 @@ typedef struct struct_thread_loadData
     int fullPathIdx_length;
 
     //eviction
-    TYPE_INDEX idx[2]; //incld src & dest (or sibl) for matrix permutation
+    TYPE_INDEX idx; 
     
+    
+    //for triplet
+    TYPE_INDEX destIdx;
     //for retrieval
      struct_thread_loadData(int serverNo, TYPE_INDEX start, TYPE_INDEX end, zz_p** data_vector, TYPE_INDEX* fullPathIdx, int fullPathIdx_length)
     {
@@ -35,6 +38,16 @@ typedef struct struct_thread_loadData
         this->fullPathIdx_length = fullPathIdx_length;
     }
     
+    //for kary eviction
+    struct_thread_loadData(int serverNo, TYPE_INDEX start, TYPE_INDEX end, zz_p** data_vector, TYPE_INDEX bucketIdx)
+	{
+		this->serverNo = serverNo;
+        this->startIdx = start;
+        this->endIdx = end;
+        this->data_vector = data_vector;    
+        this->idx = bucketIdx;
+    }
+    
     //for triplet eviction
     struct_thread_loadData(int serverNo, TYPE_INDEX start, TYPE_INDEX end, zz_p** data_vector, TYPE_INDEX srcIdx, TYPE_INDEX destIdx)
 	{
@@ -42,10 +55,10 @@ typedef struct struct_thread_loadData
         this->startIdx = start;
         this->endIdx = end;
         this->data_vector = data_vector;    
-        this->idx[0] = srcIdx;
-        this->idx[1] = destIdx;
+        this->idx = srcIdx;
+        this->destIdx = destIdx;
     }
-
+    
 	struct_thread_loadData()
 	{
 	}

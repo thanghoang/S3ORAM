@@ -8,6 +8,22 @@
   <Description/>
   <Dependencies/>
   <VirtualDirectory Name="src">
+    <File Name="ServerS3ORAM.cpp"/>
+    <File Name="ServerS3ORAM.hpp"/>
+    <File Name="ClientS3ORAM.cpp"/>
+    <File Name="ClientS3ORAM.hpp"/>
+    <File Name="ServerKaryS3ORAMO.hpp"/>
+    <File Name="ServerKaryS3ORAMO.cpp"/>
+    <File Name="ServerBinaryS3ORAMO.hpp"/>
+    <File Name="ServerBinaryS3ORAMO.cpp"/>
+    <File Name="ClientBinaryS3ORAMO.hpp"/>
+    <File Name="ClientBinaryS3ORAMO.cpp"/>
+    <File Name="ClientKaryS3ORAMO.hpp"/>
+    <File Name="ClientKaryS3ORAMO.cpp"/>
+    <File Name="ServerKaryS3ORAMC.hpp"/>
+    <File Name="ServerKaryS3ORAMC.cpp"/>
+    <File Name="ClientKaryS3ORAMC.hpp"/>
+    <File Name="ClientKaryS3ORAMC.cpp"/>
     <File Name="main.cpp" ExcludeProjConfig=""/>
     <File Name="config.h"/>
     <File Name="Utils.hpp"/>
@@ -17,10 +33,6 @@
     <File Name="struct_thread_loadData.h"/>
     <File Name="S3ORAM.cpp"/>
     <File Name="S3ORAM.hpp"/>
-    <File Name="ClientS3ORAM.cpp"/>
-    <File Name="ClientS3ORAM.hpp"/>
-    <File Name="ServerS3ORAM.cpp"/>
-    <File Name="ServerS3ORAM.hpp"/>
   </VirtualDirectory>
   <Settings Type="Executable">
     <GlobalSettings>
@@ -32,7 +44,7 @@
       </Linker>
       <ResourceCompiler Options=""/>
     </GlobalSettings>
-    <Configuration Name="Debug" CompilerType="clang( clang-703.0.29 )" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
+    <Configuration Name="Debug" CompilerType="GCC" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
       <Compiler Options="-g;-O0;-std=c++11;-Wall;-libstdc++;-c;-fPIC" C_Options="-g;-O0;-Wall" Assembler="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="0"/>
       <Linker Options="-lntl;-lgmp;-lzmq;-lpthread" Required="yes">
         <LibraryPath Value="/usr/local/lib"/>

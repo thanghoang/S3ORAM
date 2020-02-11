@@ -1,7 +1,24 @@
 #include <iostream>
+#include "config.h"
 #include "ClientS3ORAM.hpp"
 #include "ServerS3ORAM.hpp"
-#include "config.h"
+
+
+
+#if defined(CORAM_LAYOUT)
+        #include "ServerKaryS3ORAMC.hpp"
+        #include "ClientKaryS3ORAMC.hpp"
+#else
+    #if defined(TRIPLET_EVICTION)
+        #include "ServerBinaryS3ORAMO.hpp"
+        #include "ClientBinaryS3ORAMO.hpp"
+    #else
+        #include "ServerKaryS3ORAMO.hpp"
+        #include "ClientKaryS3ORAMO.hpp"
+    #endif
+    
+#endif
+
 #include "Utils.hpp"
 
 using namespace std;
@@ -11,9 +28,11 @@ using namespace std;
 
 unsigned int nthreads = std::thread::hardware_concurrency();
 
+#include "S3ORAM.hpp"
+
+
 int main(int argc, char **argv)
 {    
-    
     string mkdir_cmd = "mkdir -p ";
     string mkdir_localState = mkdir_cmd + clientLocalDir;
     string mkdir_unsharedData = mkdir_cmd + clientDataDir;
@@ -53,13 +72,34 @@ int main(int argc, char **argv)
             cin>>selectedThreads;
 		}while(selectedThreads>nthreads);
         
-		ServerS3ORAM*  server = new ServerS3ORAM(serverNo-1,selectedThreads);
+#if defined(CORAM_LAYOUT)
+        ServerS3ORAM*  server = new ServerKaryS3ORAMC(serverNo-1,selectedThreads);
+#else
+    #if defined(TRIPLET_EVICTION)
+        ServerS3ORAM*  server = new ServerBinaryS3ORAMO(serverNo-1,selectedThreads);
+    #else
+        ServerS3ORAM* server = new ServerKaryS3ORAMO(serverNo-1,selectedThreads);
+    #endif
+#endif
+        
+        
+        
 		server->start();
 	}
 	else if (choice == 1)
 	{
         
-		ClientS3ORAM* client = new ClientS3ORAM();
+#if defined(CORAM_LAYOUT)
+        ClientKaryS3ORAMC*  client = new ClientKaryS3ORAMC();
+#else
+    #if defined(TRIPLET_EVICTION)
+        ClientS3ORAM* client = new ClientBinaryS3ORAMO();
+    #else
+        ClientS3ORAM* client = new ClientKaryS3ORAMO();
+    #endif
+#endif
+		
+        
         int access, start;
 		char response = ' ';
 		int random_access;
@@ -69,7 +109,7 @@ int main(int argc, char **argv)
         cout<<endl;
         if(subOpt==1)
         {
-            client->load();
+            client->loadState();
         }
         else
         {
@@ -92,98 +132,19 @@ int main(int argc, char **argv)
 		cin.ignore();
 		cin.clear();
 		cout << endl<<endl<<endl;
-		
-	beginning:
-        cout << "SEQUENTIAL WARM-UP(1) OR RANDOM ACCESS(2)?";
-		cin >> choice;
-		cout << endl;
-		
-
-		
-		if(choice == 1)
-		{
-			cout << "START FROM?(1-" << NUM_BLOCK << ")";
-			cin >> start;
-			cout << endl;
-			//Sequential Access
-			for(int j = start; j <= NUM_BLOCK; j++)
-			{
-				cout << endl;
-				cout << "=================================================================" << endl;
-				cout << "[main] Sequential Access for " << j << " IS STARTING!" <<endl;
-				cout << "=================================================================" << endl;
-				
-				client->access(j);
-				cout << "=================================================================" << endl;
-				cout << "[main] Sequential Access for " << j << " IS COMPLETED!" <<endl;
-				cout << "=================================================================" << endl;
-				if(j % (EVICT_RATE) == 0)
-				{
-					cout << endl;
-					do
-					{
-						cout << "DO YOU WANT TO CONTINUE? (y/n)";
-						cin >> response;
-						response = tolower(response);
-					}
-					while( !cin.fail() && response!='y' && response!='n' );
-					
-					if (response == 'n')
-					{
-						goto beginning;
-					}
-				}
-			}
-		}
-		else if(choice == 2)
-		{
-			cout << "HOW MANY RANDOM ACCESS?";
-			cin >> access;
-			
-
-			for(int j = 1 ; j <= access; j++)
-			{
-				random_access = rand() % NUM_BLOCK + 1; 
-				cout << endl;
-				cout << "=================================================================" << endl;
-				cout << "[main] Random Access for " << random_access << " IS STARTING!" <<endl;
-				cout << "=================================================================" << endl;
-				
-				
-				client->access(random_access);
-				
-				cout << "=================================================================" << endl;
-				cout << "[main] Random Access for " << random_access << " IS COMPLETED!" <<endl;
-				cout << "=================================================================" << endl;
-			}
-			
-
-			
-			cout << endl;
-			do
-			{
-				cout << "DO YOU WANT TO START OVER? (y/n)";
-				cin >> response;
-				response = tolower(response);
-			}
-			while( !cin.fail() && response!='y' && response!='n' );
-			
-			if (response == 'y')
-			{
-				goto beginning;
-			}
-		}
-		else
-		{
-			cout << "COME ON!!" << endl;
-		}
-
-		cout << "BYE!" << endl;
-	}
+        for(int j = 0 ; j < 10 ; j++)
+        {
+            for(int i = 1 ; i < NUM_BLOCK+1; i++)
+            {
+                client->access(i);
+            }
+        }
+        cout<<"Done!";
+    }
 	else
 	{
 		cout << "COME ON!!" << endl;
 	}
-     
+    
     return 0;
 }

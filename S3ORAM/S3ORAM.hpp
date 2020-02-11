@@ -26,12 +26,20 @@ public:
 
     int createShares(TYPE_DATA input, TYPE_DATA* output);
 
-	int getSharedVector(TYPE_DATA* logicVector, TYPE_DATA** sharedVector);
+	int getSharedVector(TYPE_DATA* logicVector, TYPE_DATA** sharedVector, int vector_len);
 
 	int simpleRecover(TYPE_DATA** shares, TYPE_DATA* result);
 
 	int precomputeShares(TYPE_DATA input, TYPE_DATA** output, TYPE_INDEX output_size);
-
+    
+    
+    //Circuit-ORAM layout
+    int getFullEvictPathIdx(TYPE_INDEX *fullPathIdx, string str_evict);
+    int getDeepestLevel(TYPE_INDEX PathID, TYPE_INDEX blockPathID);
+    void getDeepestBucketIdx(TYPE_INDEX* meta_stash, TYPE_INDEX* meta_path, TYPE_INDEX evictPathID, int* output);
+    int prepareDeepest(TYPE_INDEX* meta_stash, TYPE_INDEX* meta_path, TYPE_INDEX PathID, int* deepest);
+    int getEmptySlot(TYPE_INDEX* meta_path, int level);
+    int prepareTarget(TYPE_INDEX* meta_path, TYPE_INDEX pathID, int *deepest, int* target);
 };
     
 #endif // SSORAM_HPP

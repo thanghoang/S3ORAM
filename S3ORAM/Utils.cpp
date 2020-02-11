@@ -63,3 +63,4 @@ void Utils::writeArrayToFile(string filename, string path, double* arr, TYPE_IND
     output<<endl;
 	output.close();
 }
+

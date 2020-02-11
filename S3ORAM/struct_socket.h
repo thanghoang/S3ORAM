@@ -16,13 +16,15 @@ struct struct_socket
 	bool isSend;
     unsigned char* data_in;
 	size_t data_in_size;
+    int peer_idx;
     
 	int CMD;
 	
-    struct_socket(std::string ADDR, unsigned char* data_out, size_t data_out_size, unsigned char* data_in, size_t data_in_size, int CMD, bool isSend)
+    
+    struct_socket(int peer_idx, unsigned char* data_out, size_t data_out_size, unsigned char* data_in, size_t data_in_size, int CMD, bool isSend)
 	{
-		this->ADDR = ADDR;
-        
+        this->peer_idx = peer_idx;
+		
 		this->data_out = data_out;
 		this->data_out_size = data_out_size;
 		

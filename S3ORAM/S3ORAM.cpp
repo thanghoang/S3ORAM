@@ -42,7 +42,7 @@ int S3ORAM::build(TYPE_POS_MAP* pos_map, TYPE_ID** metaData)
     }
     
     TYPE_DATA** temp = new TYPE_DATA*[DATA_CHUNKS];
-    for (int i = 0 ; i < DATA_CHUNKS; i++ )
+    for (int i = 0 ; i < DATA_CHUNKS; i++)
     {
         temp[i] = new TYPE_DATA[BUCKET_SIZE];
         memset(temp[i],0,sizeof(TYPE_DATA)*BUCKET_SIZE);
@@ -66,7 +66,7 @@ int S3ORAM::build(TYPE_POS_MAP* pos_map, TYPE_ID** metaData)
     
     
     //non-leaf buckets are all empty
-    for(TYPE_INDEX i = 0 ; i < NUM_NODES/2; i ++)
+    for(TYPE_INDEX i = 0 ; i < NUM_NODES - N_leaf; i ++)
     {
         file_out = NULL;
         path = clientDataDir + to_string(i);
@@ -84,9 +84,10 @@ int S3ORAM::build(TYPE_POS_MAP* pos_map, TYPE_ID** metaData)
     
     //generate random blocks in leaf-buckets
     TYPE_INDEX iter= 0;
-    for(TYPE_INDEX i = NUM_NODES/2 ; i < NUM_NODES; i++)
+    for(TYPE_INDEX i = NUM_NODES - N_leaf ; i < NUM_NODES; i++)
     {
         memset(bucket[0],0,sizeof(TYPE_DATA)*BUCKET_SIZE);
+        
         for(int ii = BUCKET_SIZE/2 ; ii<BUCKET_SIZE; ii++)
         {
             if(iter>=NUM_BLOCK)
@@ -95,9 +96,7 @@ int S3ORAM::build(TYPE_POS_MAP* pos_map, TYPE_ID** metaData)
             pos_map[blockIDs[iter]].pathID = i;
             pos_map[blockIDs[iter]].pathIdx = ii+(BUCKET_SIZE*H)  ;
             metaData[i][ii]= blockIDs[iter];
-            
             iter++;
-            
         }
         //write bucket to file
         file_out = NULL;
@@ -264,7 +263,7 @@ int S3ORAM::getEvictIdx (TYPE_INDEX *srcIdx, TYPE_INDEX *destIdx, TYPE_INDEX *si
 
 
 /**
- * Function Name: getEvictString
+ * Function Name: getEvictString (support upto K_ARY = 10)
  *
  * Description: Generates the path for eviction acc. to eviction number based on reverse 
  * lexicographical order. 
@@ -275,8 +274,19 @@ int S3ORAM::getEvictIdx (TYPE_INDEX *srcIdx, TYPE_INDEX *destIdx, TYPE_INDEX *si
  */  
 string S3ORAM::getEvictString(TYPE_ID n_evict)
 {
-    string s = std::bitset<H>(n_evict).to_string();
-    reverse(s.begin(),s.end());
+    //string s = std::bitset<H>(n_evict).to_string();
+    //reverse(s.begin(),s.end());
+    
+    string s = "";
+    while(n_evict!=0)
+    {
+        s+= to_string(n_evict%K_ARY);
+        n_evict/= K_ARY;
+    }
+    while(s.size()<H)
+    {
+        s+="0";
+    }
     return s;
 }
 
@@ -295,9 +305,10 @@ int S3ORAM::getFullPathIdx(TYPE_INDEX* fullPath, TYPE_INDEX pathID)
     TYPE_INDEX idx = pathID;
     for (int i = H; i >= 0; i--)
     {
-			fullPath[i] = idx;
-			idx = (idx-1) >> 1;
+        fullPath[i] = idx;
+        idx = (idx-1) / K_ARY;
     }
+    
 	
 	return 0;
 }
@@ -339,7 +350,6 @@ int S3ORAM::createShares(TYPE_DATA input, TYPE_DATA* output)
 	return 0;
 }
 
-
 /**
  * Function Name: getSharedVector
  *
@@ -349,20 +359,19 @@ int S3ORAM::createShares(TYPE_DATA input, TYPE_DATA* output)
  * @param sharedVector: (output) 2D array of shares from array input
  * @return 0 if successful
  */  
-int S3ORAM::getSharedVector(TYPE_DATA* logicVector, TYPE_DATA** sharedVector)
+int S3ORAM::getSharedVector(TYPE_DATA* logicVector, TYPE_DATA** sharedVector, int vector_len)
 {
 	cout << "	[S3ORAM] Starting to Retrieve Block Shares from Servers" << endl;
 
 	TYPE_DATA outputVector[NUM_SERVERS];
 
-	for (TYPE_INDEX i = 0; i < (H+1)*BUCKET_SIZE; i++)
+	for (TYPE_INDEX i = 0; i < vector_len; i++)
 	{
 		createShares(logicVector[i],outputVector);
 		for (int j = 0; j < NUM_SERVERS; j++){
 			sharedVector[j][i] = outputVector[j];
 		}
 	}
-	
 	return 0;
 }
 
@@ -438,4 +447,164 @@ int S3ORAM::precomputeShares(TYPE_DATA input, TYPE_DATA** output, TYPE_INDEX out
 }
 
 
+// Circuit-ORAM layout
 
+
+/**
+* Function Name: getFullEvictPathIdx (!!? Combine with getEvictIdx in S3ORAM )
+*
+* Description: Determine the indices of source bucket, destination bucket and sibling bucket
+* residing on the eviction path
+*
+* @param srcIdx: (output) source bucket index array
+* @param destIdx: (output) destination bucket index array
+* @param siblIdx: (output) sibling bucket index array
+* @param str_evict: (input) eviction edges calculated by binary ReverseOrder of the eviction number
+* @return 0 if successful
+*/
+int S3ORAM::getFullEvictPathIdx(TYPE_INDEX *fullPathIdx, string str_evict)
+{
+	fullPathIdx[0] = 0;
+	for (int i = 0; i < HEIGHT; i++)
+	{
+        int val = str_evict[i] - '0';
+        fullPathIdx[i+1] = (fullPathIdx[i] * K_ARY) + (val +1);
+	}
+	return 0;
+}
+int S3ORAM::getDeepestLevel(TYPE_INDEX PathID, TYPE_INDEX blockPathID)
+{	
+    TYPE_INDEX full_path_idx[HEIGHT+1];
+    TYPE_INDEX full_path_idx_of_block[HEIGHT+1];
+    
+	getFullPathIdx(full_path_idx, PathID);
+
+	getFullPathIdx(full_path_idx_of_block, blockPathID);
+	for (int j = HEIGHT; j >= 0; j--)
+	{
+		if (full_path_idx_of_block[j] == full_path_idx[j])
+		{
+			return j;
+		}
+	}
+	return -1;
+}
+void S3ORAM::getDeepestBucketIdx(TYPE_INDEX* meta_stash, TYPE_INDEX* meta_path, TYPE_INDEX evictPathID, int* output)
+{
+	for (int i = 0; i < H + 2; i++)
+		output[i] = -1;
+	int deepest = -1;
+	for (int i = 0; i < STASH_SIZE; i++)
+	{
+		if (meta_stash[i] != -1)
+		{
+			int k = getDeepestLevel(evictPathID, meta_stash[i]);
+			if (k >= deepest)
+			{
+				deepest = k;
+				output[0] = i;
+			}
+		}
+	}
+	for (int i = 0; i < HEIGHT + 1; i++)
+	{
+		deepest = getDeepestLevel(evictPathID, meta_path[i*BUCKET_SIZE]);
+		if (deepest != -1)
+			output[i + 1] = 0;
+		for (int j = 1; j < BUCKET_SIZE; j++)
+		{
+			int k = getDeepestLevel(evictPathID, meta_path[i*BUCKET_SIZE+j]);
+			if (k > deepest)
+			{
+				deepest = k;
+				output[i + 1] = j;
+			}
+		}
+	}
+}
+
+int S3ORAM::prepareDeepest(TYPE_INDEX* meta_stash, TYPE_INDEX* meta_path, TYPE_INDEX PathID, int* deepest)
+{
+	int goal = -2;
+	int src = -2;
+    int deeperBlockIdx[HEIGHT+2];
+    
+	getDeepestBucketIdx(meta_stash, meta_path, PathID, deeperBlockIdx);
+
+	for (int i = 0; i < HEIGHT + 2; i++)
+	{
+		deepest[i] = -2;
+	}
+	//if the stash is not empty
+	if (deeperBlockIdx[0] != -1)
+	{
+		src = -1;
+		goal = getDeepestLevel(PathID, meta_stash[deeperBlockIdx[0]]);
+	}
+	for (int i = 0; i < HEIGHT + 1; i++)
+	{
+		if (goal >= i)
+		{
+			deepest[i] = src;
+		}
+		int l = -2;
+		if (deeperBlockIdx[i + 1] != -1)
+			l = getDeepestLevel(PathID, meta_path[i*BUCKET_SIZE + deeperBlockIdx[i + 1]]);
+		if (l > goal)
+		{
+			goal = l;
+			src = i;
+		}
+	}
+
+	for (int i = HEIGHT + 1; i >= 0; i--)
+	{
+		deepest[i + 1] = deepest[i];
+		if (deepest[i + 1] != -2)
+			deepest[i + 1] += 1;
+	}
+	deepest[0] = -2;
+	return 0;
+}
+
+int S3ORAM::getEmptySlot(TYPE_INDEX* meta_path, int level)
+{
+	for (int i = level*BUCKET_SIZE; i < (level + 1)*BUCKET_SIZE; i++)
+	{
+		if (meta_path[i] == -1) //!?
+			return (i % BUCKET_SIZE);
+	}
+	return -1;
+}
+int S3ORAM::prepareTarget(TYPE_INDEX* meta_path, TYPE_INDEX pathID, int *deepest, int* target)
+{
+	int dest = -2;
+	int src = -2;
+	for (int i = 0; i < HEIGHT + 2; i++)
+	{
+		target[i] = -2;
+	}
+	for (int i = HEIGHT + 1; i > 0; i--)
+	{
+		if (i == src)
+		{
+			target[i] = dest;
+			dest = -2;
+			src = -2;
+		}
+		if (i >= 0)
+		{
+			if (((dest == -2 && getEmptySlot(meta_path,i-1) != -1) || target[i] != -2) && deepest[i] != -2)
+			{
+				src = deepest[i];
+				dest = i;
+			}
+		}
+	}
+	//Stash case
+	if (src == 0)
+	{
+		target[0] = dest;
+	}
+	return 0;
+}
