@@ -53,7 +53,7 @@ const std::string SERVER_ADDR[NUM_SERVERS]            -> Server IP addresses
 ### Notes
 It is recommended to select ```EVICT_RATE``` = ```BUCKET_SIZE/2```, and ```BUCKET_SIZE>73``` to avoid bucket overflow.
 
-The folder ```libS3ORAM/data``` is required to store generated S3ORAM data structure.
+The folder ```S3ORAM/data``` is required to store generated S3ORAM data structure.
 
 # Build & Compile
 Goto folder ``S3ORAM/`` and execute
@@ -69,16 +69,16 @@ Run the binary executable file ```S3ORAM```, which will ask for either Client or
 
 
 ## Local Testing:
-1. Set ``SERVER_ADDR`` in ``libS3ORAM/config.h`` to be ``localhost``. 
+1. Set ``SERVER_ADDR`` in ``S3ORAM/config.h`` to be ``localhost``. 
 2. Choose unique ``SERVER_PORT`` and ``SERVER_RECV_PORT`` for each server entity. 
-3. Compile the code with ``make`` in the ``libS3ORAM/`` folder. 
-4. Go to ``libS3ORAM/Debug`` and run the compiled ``libS3ORAM`` file in different Terminals, each playing the client/server role.
+3. Compile the code with ``make`` in the ``S3ORAM/`` folder. 
+4. Go to ``S3ORAM/Debug`` and run the compiled ``S3ORAM`` file in different Terminals, each playing the client/server role.
 
 ## Real Network Testing:
-1. Copy the binary file ``libS3ORAM`` compiled under the same configuration to running machines. 
-2. For first time usage, run the ``libS3ORAM/Debug/libS3ORAM`` file on the *client* machine to initialize the S3ORAM structure first.
-3. Copy the folder ``libS3ORAM/data/i/`` to server *i*, or follow the instruction on the client machine to transmit all data to corresponding server (It is recommend to manually copy the folder to avoid interuption during tranmission).
-4. For each server *i*, run the compiled file ``libS3ORAM`` and select the server role (option 2) and the corresponding ID ``i``.
+1. Copy the binary file ``S3ORAM`` compiled under the same configuration to running machines. 
+2. For first time usage, run the ``S3ORAM/Debug/S3ORAM`` file on the *client* machine to initialize the S3ORAM structure first.
+3. Copy the folder ``S3ORAM/data/i/`` to server *i*, or follow the instruction on the client machine to transmit all data to corresponding server (It is recommend to manually copy the folder to avoid interuption during tranmission).
+4. For each server *i*, run the compiled file ``S3ORAM`` and select the server role (option 2) and the corresponding ID ``i``.
 
 
 # Android Build
