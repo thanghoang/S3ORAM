@@ -1,5 +1,5 @@
 # S3ORAM Extension
-This branch contains the implementation of the **(extended) S3ORAM framework** from the basic S3ORAM scheme in CCS'17 that supports k-ary tree and Circuit-ORAM layout. The full paper is available [here](https://dl.acm.org/doi/abs/10.1145/3369108) (Feel free to [email me](mailto:hoangm@mail.usf.edu?subject=[Paper%20Request]%20S3ORAM%20ACM%20TOPS) for the free version).
+This branch contains the implementation of the **EXTENDED S3ORAM framework** from the basic S3ORAM scheme in CCS'17 that supports k-ary tree and Circuit-ORAM layout. The full paper is available [here](https://dl.acm.org/doi/abs/10.1145/3369108) (Feel free to [email me](mailto:hoangm@mail.usf.edu?subject=[Paper%20Request]%20S3ORAM%20ACM%20TOPS) for the free version).
 
 
 This project is built on [CodeLite IDE](http://codelite.org). It is recommended to install CodeLite to load the full S3ORAM workspace. 
