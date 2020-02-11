@@ -94,4 +94,4 @@ export LD_LIBRARY_PATH=$home/s3oram/bin
 9. Locate to folder ``s3oram/bin``, run the file ``s3oram_client`` to run the program.
 
 # Further Information
-For any inquiries, bugs, and assistance on building and running the code, please contact Thang Hoang (hoangmin@oregonstate.edu).
+For any inquiries, bugs, and assistance on building and running the code, please contact me at [hoangm@mail.usf.edu](hoangm@mail.usf.edu).
