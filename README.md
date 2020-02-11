@@ -93,5 +93,24 @@ export LD_LIBRARY_PATH=$home/s3oram/bin
 ```
 9. Locate to folder ``s3oram/bin``, run the file ``s3oram_client`` to run the program.
 
+
+## Citing
+
+If the code is found useful, we would be appreciated if our paper can be cited as follows.
+
+``Thang Hoang,  Ceyhun D. Ozkaptan, Attila A Yavuz, Jorge Guajardo and Tam Nguyen. "S3ORAM: A Computation-Efficient and Constant Client Bandwidth Blowup ORAM with Shamir Secret Sharing". Proceedings of the 2017 ACM SIGSAC Conference on Computer and Communications Security, 2017, 491--505``
+
+### Bibtex format
+```
+@inproceedings{hoang2017s3oram,
+  title={S3ORAM: A Computation-Efficient and Constant Client Bandwidth Blowup ORAM with Shamir Secret Sharing},
+  author={Hoang, Thang and Ozkaptan, Ceyhun D and Yavuz, Attila A and Guajardo, Jorge and Nguyen, Tam},
+  booktitle={Proceedings of the 2017 ACM SIGSAC Conference on Computer and Communications Security},
+  pages={491--505},
+  year={2017}
+}
+```
+
+
 # Further Information
 For any inquiries, bugs, and assistance on building and running the code, please contact me at [hoangm@mail.usf.edu](mailto:hoangm@mail.usf.edu?Subject=[BasicS3ORAM]%20Inquiry).
