@@ -70,7 +70,7 @@ Run the binary executable file ```S3ORAM```, which will ask for either Client or
 
 ## Local Testing:
 1. Set ``SERVER_ADDR`` in ``S3ORAM/config.h`` to be ``localhost``. 
-2. Choose unique ``SERVER_PORT`` and ``SERVER_RECV_PORT`` for each server entity. 
+2. Set  ``SERVER_PORT``. 
 3. Compile the code with ``make`` in the ``S3ORAM/`` folder. 
 4. Go to ``S3ORAM/Debug`` and run the compiled ``S3ORAM`` file in different Terminals, each playing the client/server role.
 
