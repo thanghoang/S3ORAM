@@ -28,8 +28,8 @@ All S3ORAM configurations are located in ```S3ORAM/config.h```.
 
 static const unsigned long long P = 1073742353;       -> Prime field (size should be equal to the defined TYPE_DATA)
 
-#define NUM_SERVERS 7                                 -> Number of servers \ell.
-#define PRIVACY_LEVEL 3                               -> Privacy level t. 
+#define NUM_SERVERS 3                                 -> Number of servers \ell.
+#define PRIVACY_LEVEL 1                               -> Privacy level t. 
 
 const long long int vandermonde[NUM_SERVERS]          -> The first row of inverse of vandermonde matrix (should be defined according to SERVER_ID from 1....n)
 
