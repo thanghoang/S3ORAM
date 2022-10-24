@@ -53,10 +53,12 @@ typedef unsigned long long TYPE_DATA;
 
 
 //=== SECRET SHARING PARAMETER================================================
-#define NUM_SERVERS 7
-#define PRIVACY_LEVEL 3
-//const long long int vandermonde[NUM_SERVERS] = {3 , -3 + P, 1};
-const long long int vandermonde[NUM_SERVERS] = {7, -21+P, 35, -35+P, 21, -7+P, 1};
+#define NUM_SERVERS 3
+// #define NUM_SERVERS 7
+#define PRIVACY_LEVEL 1
+// #define PRIVACY_LEVEL 3
+const long long int vandermonde[NUM_SERVERS] = {3 , -3 + P, 1};
+// const long long int vandermonde[NUM_SERVERS] = {7, -21+P, 35, -35+P, 21, -7+P, 1};
 
 /** Vandermonde Values for Different Number of Servers (7, 5, 3)*/
 //{7, -21+P, 35, -35+P, 21, -7+P, 1};//{5, -10+P, 10, -5+P, 1};//{3, -3+P, 1};
@@ -66,7 +68,8 @@ const long long int vandermonde[NUM_SERVERS] = {7, -21+P, 35, -35+P, 21, -7+P, 1
 //=== SERVER INFO ============================================================
 
 	//SERVER IP ADDRESSES
-const std::string SERVER_ADDR[NUM_SERVERS] = {"tcp://localhost", "tcp://localhost", "tcp://localhost", "tcp://localhost", "tcp://localhost", "tcp://localhost", "tcp://localhost"}; 	
+const std::string SERVER_ADDR[NUM_SERVERS] = {"tcp://localhost", "tcp://localhost", "tcp://localhost"}; 	
+// const std::string SERVER_ADDR[NUM_SERVERS] = {"tcp://localhost", "tcp://localhost", "tcp://localhost", "tcp://localhost", "tcp://localhost", "tcp://localhost", "tcp://localhost"}; 	
 #define SERVER_PORT 5555        //define the first port to generate incremental ports for client-server /server-server communications
 
 //============================================================================

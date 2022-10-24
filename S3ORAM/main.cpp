@@ -9,7 +9,7 @@ using namespace std;
 
 #include <thread>
 
-unsigned int nthreads = std::thread::hardware_concurrency();
+unsigned int nthreads = std::thread::hardware_concurrency();  // Returns the number of concurrent threads supported by the implementation. The value should be considered only a hint.
 
 int main(int argc, char **argv)
 {    
